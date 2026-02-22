@@ -16,7 +16,9 @@ const app = express();
 app.use(cors({
     origin: [
     "https://finance-monitoring.vercel.app",
-    "http://localhost:5173"
+    "https://aqu1ver1.github.io",
+    "http://localhost:5173",
+    "https://finance-monitoring.vercel.app"
   ]
 }));
 app.use(express.json());
