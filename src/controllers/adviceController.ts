@@ -51,8 +51,21 @@ export async function getAdvice(req: Request, res: Response) {
     });
 
     if (!response.ok) {
-      const errorText = await response.text();
-      return res.status(response.status).json({ error: errorText });
+    const errorText = await response.text();
+    
+    if (response.status === 429) {
+        return res.status(429).json({ 
+        error: "OpenAI rate limit reached. Please wait a moment and try again, or check your billing at platform.openai.com/settings/billing." 
+        });
+    }
+
+    if (response.status === 401) {
+        return res.status(401).json({ 
+        error: "Invalid OpenAI API key. Check your OPENAI_API_KEY environment variable." 
+        });
+    }
+
+    return res.status(response.status).json({ error: errorText });
     }
 
     const data = await response.json() as {
