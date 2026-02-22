@@ -14,7 +14,10 @@ const prisma = new PrismaClient();
 const app = express();
 
 app.use(cors({
-  origin: "https://finance-monitoring.vercel.app/"
+    origin: [
+    "https://finance-monitoring.vercel.app",
+    "http://localhost:5173"
+  ]
 }));
 app.use(express.json());
 
