@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { AuthRequest } from "../middleware/auth";
 
 const OPENAI_ENDPOINT = "https://api.openai.com/v1/chat/completions";
 
@@ -9,8 +10,12 @@ const focusHints: Record<string, string> = {
   budget: "Recommend category-level budget controls and limits."
 };
 
-export async function getAdvice(req: Request, res: Response) {
+export async function getAdvice(req: AuthRequest, res: Response) { 
   const apiKey = process.env.OPENAI_API_KEY;
+  const userId = req.userId;
+  if (!userId) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
   if (!apiKey) {
     return res.status(500).json({ error: "Missing OpenAI API key" });
   }
